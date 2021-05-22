@@ -7,17 +7,22 @@ News into the Disc is a Android Application.
 ```
 @startuml
 
-    package externals* #ffcccc{
+package externals* #ffcccc  {
 
-        package org.threeten.bp{
+    package org.threeten.bp {
                 
-                class zonedDateTime{
-                ...
-            }
-
-        }    
+        class ZonedDateTime {
+              ...
+        }
 
     }
+
+    package net.openhft.hashing{
+        class LongHashFunction{
+            ...
+        }
+    }
+}
 
 package cl.ucn.disc.dsm.rodobollmann{
 
@@ -44,6 +49,7 @@ package cl.ucn.disc.dsm.rodobollmann{
         }
 
         News *--> "1" ZonedDateTime : - publishedAt
+        News ..> LongHashFunction : <<use>>
     }
 
     package services #ccccff{
