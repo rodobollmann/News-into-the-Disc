@@ -28,7 +28,6 @@ public final class TestContracts extends BaseTest {
      */
 
     @Test
-
     public void testConstructor(){
 
         //call the constructor
@@ -36,15 +35,30 @@ public final class TestContracts extends BaseTest {
         Assertions.assertNotNull(contracts, "Contracts null!");
     }
 
+    /**
+     * Testing the save.
+     */
     @Test
-
     public void TestSave(){
+
+        log.debug("Testing the save ..");
+
 
         //The contracts implementation
         Contracts contracts = new ContractsImpFaker();
 
+        //WTF?
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            contracts.save(null);
+        });
+
         //The Faker
         Faker faker = new Faker();
+
+        final int N =  20;
+
+        //add 20 news to the backend
+        for (int i = 0; i < N; i++){
 
         // 1 News
         News news =
@@ -58,25 +72,47 @@ public final class TestContracts extends BaseTest {
                         faker.dune().quote(),
                         ZonedDateTime.now(ZoneId.of("-3")));
 
-        log.info("TheNews: {}.", toString(news));
+        log.info("News {}: {}.", i, toString(news));
 
         //Save into the backend
         contracts.save(news);
-
-        //WTF?
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-        contracts.save(null);
-        });
+    }
 
         //Verify the size of the list
-        Assertions.assertEquals(1, contracts.retrieveNews(10).size());
+        Assertions.assertEquals(10, contracts.retrieveNews(10).size());
 
-        //Save into the backend
+        Assertions.assertEquals(1, contracts.retrieveNews(1).size());
+
+        //The size > the real size
+        Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+        Assertions.assertEquals(100, contracts.retrieveNews(100).size());
+        });
+
+        //Negative size
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            contracts.retrieveNews(-100);
+            contracts.retrieveNews(0);
+        });
+
+        //Test the duplicates
+        News news = contracts.retrieveNews(1).get(0);
+        Assertions.assertNotNull(news);
+
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             contracts.save(news);
         });
 
+        //Save into the backend v2.0
+        /*
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            contracts.save(news);
+        });
+        */
+
+        log.debug("Done.");
+
     }
+
 
 
 }

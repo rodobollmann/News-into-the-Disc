@@ -40,8 +40,14 @@ public class ContractsImpFaker implements  Contracts{
       throw new IllegalArgumentException("size cannot be zero or negative");
     }
 
-    // Error! Warning!
-    return Collections.unmodifiableList(this.listNews);
+    if (size > this.listNews.size()) {
+        throw new IndexOutOfBoundsException("Size > The current size");
+    }
+
+    // Return the last "size" inside of unmodifiable list
+            return Collections.unmodifiableList(
+              this.listNews.subList(this.listNews.size()-size, this.listNews.size())
+      );
 
   }
 
@@ -51,7 +57,7 @@ public class ContractsImpFaker implements  Contracts{
      * @param news to save.
      */
     @Override
-    public void save(News news) {
+    public void save(final News news) {
 
         //Nullity test
         if (news == null){
@@ -65,6 +71,11 @@ public class ContractsImpFaker implements  Contracts{
             }
         }
 
+        //Insert into the end of the list
         this.listNews.add(news);
+
+        //sort the list by publishedAt
+        Collections.sort(this.listNews,
+                (a, b) -> b.getPublishedAt().compareTo(a.getPublishedAt()));
     }
 }
