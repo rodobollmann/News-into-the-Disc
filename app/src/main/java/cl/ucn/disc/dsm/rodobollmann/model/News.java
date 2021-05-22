@@ -4,7 +4,6 @@
 
 package cl.ucn.disc.dsm.rodobollmann.model;
 
-
 import net.openhft.hashing.LongHashFunction;
 
 import org.threeten.bp.ZonedDateTime;
@@ -73,29 +72,25 @@ public final class News {
         // FIXME: add the hash (title + source + author)
 
         //Title replace
-        if (title == null){
-            title = "No Title";
-        }
-        this.title = title;
+       this.title = (title != null && title.length() > 0) ? title : "No Title";
 
         // Source validation
         if(source == null) {
             throw new IllegalArgumentException("Source was null");
         }
-
         if (source.length() <= 4){
             throw new IllegalArgumentException("Source size <= 4");
-
         }
         this.source = source;
 
-        // Hash calculation
+        //Author
+        this.author = (author != null && author.length() > 0) ? author : "No Author";
+
+        // Hash xx (title + source + author)
         this.id = LongHashFunction.xx().hashChars(
-                title + "|" + source
+                this.getTitle() + "|" + this.getSource() + "|" + this.getAuthor()
         );
 
-
-        this.author = author;
         this.url = url;
         this.urlImage = urlImage;
         this.description = description;
