@@ -4,6 +4,11 @@
 
 package cl.ucn.disc.dsm.rodobollmann.service;
 
+import com.github.javafaker.Faker;
+
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +28,28 @@ public class ContractsImpFaker implements  Contracts{
      * The Constructor.
      */
     public ContractsImpFaker() {
-        //Nothing here
+
+        int N = 20;
+
+        // Generate test data
+        Faker faker = new Faker();
+
+        for (int i = 0; i < N; i++){
+
+            //Test: valid data
+            News news = new News(
+                    faker.book().title(),
+                    faker.book().publisher(),
+                    faker.book().author(),
+                    faker.internet().url(),
+                    faker.internet().url(),
+                    faker.book().genre(),
+                    faker.dune().quote(),
+                    ZonedDateTime.now(ZoneId.of("-3")));
+
+            this.save(news);
+
+        }
     }
 
   /**

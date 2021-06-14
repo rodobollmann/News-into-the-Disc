@@ -22,10 +22,17 @@ package externals* #ffcccc  {
             ...
         }
     }
+
+    package com.github.javafaker {
+         class Faker{
+            ... 
+        }
+    
+    }
+
 }
 
 package cl.ucn.disc.dsm.rodobollmann{
-
 
     package model #ccffcc{
     
@@ -47,18 +54,25 @@ package cl.ucn.disc.dsm.rodobollmann{
             + getDescription(): String
             + getContent(): String
         }
-
         News *--> "1" ZonedDateTime : - publishedAt
         News ..> LongHashFunction : <<use>>
+
     }
 
     package services #ccccff{
 
-    interface Contracts <<interface>> { 
-        + retrieveNews(size: Intenger) : List <News>
-        + save(news: News) : void
+        interface Contracts <<interface>> { 
+            + retrieveNews(size: Intenger) : List <News>
+            + save(news: News) : void
       }
-      Contracts ..> News : <<use>>
+         Contracts ..> News : <<use>>
+
+         class ContractsImplFaker{
+            -listNews : List<News>
+         }
+         ContractsImplFaker ..|> Contracts
+         ContractsImplFaker ..> Faker : <<use>>
+
     }
 
 }
