@@ -8,23 +8,64 @@ android {
 
     defaultConfig {
         applicationId "cl.ucn.disc.dsm.rodobollmann"
-        minSdkVersion 16
+        minSdkVersion 28
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        release {
+        debug{
+            // Enable the debugger
+            debuggable true
+            // Compress the xml
             minifyEnabled false
+            // Compress the resources
+            shrinkResources false
+            // Zip Stuff
+            zipAlignEnabled false
+            //Compress the PNG images
+            crunchPngs false
+            //Add ".d" to versionName
+            versionNameSuffix ".d"
+        }
+        release {
+            // Enable the debugger
+            debuggable false
+            // Compress the xml
+            minifyEnabled true
+            // Compress the resources
+            shrinkResources true
+            // Zip Stuff
+            zipAlignEnabled true
+            //Compress the PNG images
+            crunchPngs true
+            //Add ".r" to versionName
+            versionNameSuffix ".r"
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    //Change versionCOde and VersionName
+    //android.applicationVariants.all { variant ->
+        //variant.outputs.each { output ->
+            //output.versionCodeOverride = project.ext.buildTimestamp
+            //output.versionNameOverride = project.ext.buildFullName
+
+        //}
+    //}
+
+    buildFeatures{
+        // Process the build config
+        buildConfig = true
+        // Enable the easy view Binding
+        viewBinding = true
     }
 }
 
