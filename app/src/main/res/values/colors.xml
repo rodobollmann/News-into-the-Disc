@@ -11,5 +11,10 @@
     <color name="toolbarTitleTextColor">@color/blue_0</color>
     <color name="toolbarSubtitleTextColor">@color/blue_100</color>
     <color name="toolbarBackground">@color/blue_800</color>
+    
+    <!-- The color of the text-->
+    <color name="textColorPrimary">@color/blue_900</color>
+    <color name="textColorSecondary">@color/blue_800</color>
+    <color name="textColorTerciary">@color/blue_700</color>
 
 </resources>
