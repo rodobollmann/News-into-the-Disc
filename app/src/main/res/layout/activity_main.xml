@@ -18,8 +18,22 @@
        app:contentInsetStart="0dp"
        app:contentInsetStartWithNavigation="0dp"
        app:subtitle="Desarrollo Soluciones Moviles"
-       app:title="@string/app_name"/>
+       app:title="@string/app_name" />
 
+   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+       android:id="@+id/am_srl_refresh"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:scrollbars="vertical">
 
+      <androidx.recyclerview.widget.RecyclerView
+          android:id="@+id/am_rv_list_news"
+          android:layout_width="match_parent"
+          android:scrollbars="vertical"
+          android:layout_height="match_parent" >
+
+      </androidx.recyclerview.widget.RecyclerView>
+
+   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>
