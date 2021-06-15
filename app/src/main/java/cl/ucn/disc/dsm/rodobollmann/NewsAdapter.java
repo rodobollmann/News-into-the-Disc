@@ -4,6 +4,7 @@
 
 package cl.ucn.disc.dsm.rodobollmann;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.ocpsoft.prettytime.PrettyTime;
+import org.threeten.bp.DateTimeUtils;
+import org.threeten.bp.format.DateTimeFormatter;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import cl.ucn.disc.dsm.rodobollmann.databinding.RowNewsBinding;
@@ -23,6 +29,11 @@ import cl.ucn.disc.dsm.rodobollmann.model.News;
  * @author Rodolfo Bollmann Checura
  */
 public final class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
+
+    /**
+     * The PrettyTime
+     */
+    private static final PrettyTime PRETTY_TIME = new PrettyTime();
 
     /**
      * DataSource
@@ -118,6 +129,26 @@ public final class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsView
 
             //Bind the author
             this.rowNewsBinding.rnTvAuthor.setText(news.getAuthor());
+
+            //Bind the source
+            this.rowNewsBinding.rnTvSource.setText(news.getSource());
+
+            //Bind the description
+            this.rowNewsBinding.rnTvDescription.setText(news.getDescription());
+
+            //zonedDateTime to Date
+            final Date theDate = DateTimeUtils.toDate(news.getPublishedAt().toInstant());
+            //Bind the Date
+            this.rowNewsBinding.rnTvPublishedAt.setText(PRETTY_TIME.format(theDate));
+
+            //Bind the image
+            if (news.getUrlImage() != null){
+                final Uri uri = Uri.parse(news.getUrlImage());
+                this.rowNewsBinding.rnSdvImage.setImageURI(uri);
+            } else{
+                //No image, use the default
+                this.rowNewsBinding.rnSdvImage.setImageResource(R.drawable.ic_launcher_foreground);
+            }
 
         }
     }
