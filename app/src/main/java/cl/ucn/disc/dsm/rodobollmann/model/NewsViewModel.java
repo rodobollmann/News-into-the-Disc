@@ -5,6 +5,8 @@
 package cl.ucn.disc.dsm.rodobollmann.model;
 
 import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -14,9 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import cl.ucn.disc.dsm.rodobollmann.service.Contracts;
 import cl.ucn.disc.dsm.rodobollmann.service.ContractsImpFaker;
+import cl.ucn.disc.dsm.rodobollmann.service.newsapi.NewsAPIService;
 
 /**
  * The NewsViewModel
@@ -33,7 +37,7 @@ public final class NewsViewModel extends AndroidViewModel {
     /**
      * The Contract.
      */
-    private final Contracts contracts = new ContractsImpFaker();
+    private final Contracts contracts = new NewsAPIService(); //ContractsImpFaker();
 
     /**
      * The List Of News.
@@ -67,11 +71,19 @@ public final class NewsViewModel extends AndroidViewModel {
         //Show message if theNews are empty
         if(this.theNews.getValue() == null || this.theNews.getValue().size() == 0){
             log.warn("No News, fetching from contracts ..");
-         }
+        }
 
-        //Get the news from the backend
-        //FIXME: 10 is a good number?
-        this.theNews.setValue(this.contracts.retrieveNews(10));
+        // Background thread
+
+        Executors.newSingleThreadExecutor().execute(() ->{
+        List<News> news = this.contracts.retrieveNews(50);
+
+            //GUI thread
+            new Handler(Looper.getMainLooper()).post(() ->{
+                this.theNews.setValue(news);
+            });
+
+        });
 
     }
 

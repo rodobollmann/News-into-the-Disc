@@ -14,6 +14,8 @@ import android.util.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.Executors;
+
 import cl.ucn.disc.dsm.rodobollmann.databinding.ActivityMainBinding;
 import cl.ucn.disc.dsm.rodobollmann.model.NewsViewModel;
 
